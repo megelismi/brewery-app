@@ -1,0 +1,47 @@
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  width: 70%;
+  height: 100%;
+  float: left;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.brewery-side-bar {
+	float: right;
+	height: 100%;
+	width: 30%;
+	padding: 0;
+}
+
+.brewery-info {
+	list-style: none;
+	padding-left: 10px;
+}
+
+.intro-page {
+	text-align: center;
+	width: 500px;
+	height: 300px;
+	margin-left: -250px;
+	margin-top: -150px;
+	background-color: white;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border: ;
+	/*opacity: 0.9;
+	transition: opacity 500ms ease;*/
+	border-radius: 4px;
+	padding: 20px;
+ }
+
+.hidden {
+  opacity: 0;
+  display: none;
+}

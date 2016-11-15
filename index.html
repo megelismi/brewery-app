@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Brewery Locator</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+
+    <div class='intro-page hidden'>
+      <form class="city-and-state">
+        City:<input type="text" name="city" placeholder="city"><br>
+        State:<input type="text" name="city" placeholder="state"><br><br>
+        <input type="submit" value="Submit">
+      </form>
+   </div>
+
+    <div id="map"></div>
+    <div class="brewery-side-bar">
+      <ul class="brewery-info">
+      </ul>
+    </div>
+
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBc-bWk1xLAWHUqIoYDZ4piJb4J3Ajvh4k&callback=initMap">
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
