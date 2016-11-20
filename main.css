@@ -1,5 +1,6 @@
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
+
 #map {
   width: 70%;
   height: 100%;
@@ -10,6 +11,11 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Hind', sans-serif;
+}
+
+h1 {
+	font-family: 'Special Elite', cursive;
 }
 
 .brewery-side-bar {
@@ -27,21 +33,44 @@ html, body {
 .intro-page {
 	text-align: center;
 	width: 500px;
-	height: 300px;
+	height: 350px;
 	margin-left: -250px;
-	margin-top: -150px;
+	margin-top: -175px;
 	background-color: white;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	border: ;
-	/*opacity: 0.9;
-	transition: opacity 500ms ease;*/
+	border: 1px gray solid;
+	opacity: 0.9;
+	transition: opacity 500ms ease;
 	border-radius: 4px;
-	padding: 20px;
+	padding: 5px;
  }
 
+.intro-text {
+	padding-bottom: 10px;
+	font-family: 'Hind', sans-serif;
+	font-size: 0.9em;
+}
+
+.city, .state {
+	width: 200px;
+	height: 15px;
+}
+
+input[type=submit] {
+	background-color: white;
+    height: 30px;
+    width: 80px;
+    border: 1px gray solid;
+    border-radius: 4px;
+    font-size: 12px
+}
 .hidden {
   opacity: 0;
   display: none;
+}
+
+.wrapper {
+	text-align: left;
 }
