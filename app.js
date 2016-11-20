@@ -88,7 +88,7 @@ const addsBreweryInfoToPage = (breweryData) => {
   });
 }
 
-const initMap = () => {
+var initMap = () => {
 
 let map = new google.maps.Map(document.getElementById('map'), {
   zoom: 12,
@@ -107,13 +107,16 @@ let markerCluster = new MarkerClusterer(map, markers,
 
 //event listeners
 
+$('.city-and-state').submit('click', function(event){
+	event.preventDefault(); 
+	$('.intro-page').addClass('hidden');
+	$('.map').removeClass('hidden');
+	$('.brewery-side-bar').removeClass('hidden');
+	var userCity = $('.city').val();
+	var userState = $('.state').val(); 
+	getBreweryDataFromApi(userCity, userState, savesApiData);
+})
 
-
-	//listens for submit of city and state on intro page
 	//listens for clicks on lis to expand buttons - v2
 	//listens for clicks on google maps markers to expand info -v2
 
-$(() => {
-	getBreweryDataFromApi("san francisco", "california", savesApiData);
-
-})
