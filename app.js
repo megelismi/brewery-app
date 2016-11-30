@@ -1,4 +1,8 @@
 
+//TODO:
+	//add search within radius feature
+	//figure out timing issues
+
 const brewLocationsUrl = 'http://crossorigin.me/http://api.brewerydb.com/v2/locations/?';
 const breweryApiKey = 'faa8e58deba5001b5b04d3431a91480d';
 const googleMapsBaseUrl = 'http://crossorigin.me/https://maps.googleapis.com/maps/api/js?';
@@ -17,7 +21,14 @@ const getBreweryDataFromApi = (locality, region, callback) => {
   	locality: locality,
     region: region,
   }
-$.getJSON(brewLocationsUrl, query, callback);
+  return new Promise((resolve, reject) => {
+	  $.getJSON(brewLocationsUrl, query, (...args) => {
+	  	// args = [arg1, arg2, arg3]
+	  	// this line is like: callback(arg1, arg2, arg3)
+	  	callback(...args);
+	  	resolve();
+	  });
+  });
 }
 
 //modify state
@@ -28,32 +39,40 @@ const savesApiData = (api) => {
 }
 
 const addsLatandLongToLocations = (api) => {
-  api.data.forEach(function(dataObj) {
-    let latitude = dataObj.latitude;
-	let longitude = dataObj.longitude;
-	  if (dataObj.name !== "Main Brewery" && dataObj.locationType !== 'office') {
-	    locations.push({'lat': latitude, 'lng': longitude});
-	  }
-  });
+	if (api.data) {
+		api.data.forEach(function(dataObj) {
+		    let latitude = dataObj.latitude;
+			let longitude = dataObj.longitude;
+			if (dataObj.name !== "Main Brewery" && dataObj.locationType !== 'office') {
+			    locations.push({'lat': latitude, 'lng': longitude});
+			}
+	  	})
+	}
+
 }
 
 const populateBreweryData = (api) => {
-  api.data.forEach ((dataObj) => {
-    if (dataObj.name !== "Main Brewery" && dataObj.locationType !== 'office') {
-      breweryData.push({
-	    name: dataObj.name,
-	    id: dataObj.id,
-	    streetAddress: dataObj.streetAddress,
-	    locality: dataObj.locality,
-	    region: dataObj.region,
-	    isClosed: dataObj.isClosed, 
-	    website: dataObj.brewery.website,
-	    phone: dataObj.phone,
-	    locationType: dataObj.locationType});
-    }
-  });
-initMap();
-addsBreweryInfoToPage(breweryData);
+	if (api.data) {
+		api.data.forEach ((dataObj) => {
+    		if (dataObj.name !== "Main Brewery" && dataObj.locationType !== 'office') {
+			      	breweryData.push({
+				    name: dataObj.name,
+				    id: dataObj.id,
+				    streetAddress: dataObj.streetAddress,
+				    locality: dataObj.locality,
+				    region: dataObj.region,
+				    isClosed: dataObj.isClosed, 
+				    website: dataObj.brewery.website,
+				    phone: dataObj.phone,
+				    locationType: dataObj.locationType
+				})
+		    }
+  		})
+	}
+	if (locations.length > 0) {
+		initMap();
+		addsBreweryInfoToPage(breweryData);
+	}
 }	
 
 //render functions
@@ -90,32 +109,44 @@ const addsBreweryInfoToPage = (breweryData) => {
 
 var initMap = () => {
 
-let map = new google.maps.Map(document.getElementById('map'), {
-  zoom: 12,
-  center: locations[0]
-});
+	let map = new google.maps.Map(document.getElementById('map'), {
+	  zoom: 12,
+	  center: locations[0]
+	});
 
-let markers = locations.map((location, i) => {
-  return new google.maps.Marker({
-    position: location,
-  });
-});
+	let markers = locations.map((location, i) => {
+	  return new google.maps.Marker({
+	    position: location,
+	  });
+	});
 
-let markerCluster = new MarkerClusterer(map, markers,
-	{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+	let markerCluster = new MarkerClusterer(map, markers,
+		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 }
 
 //event listeners
 
 $('.city-and-state').submit('click', function(event){
 	event.preventDefault(); 
-	$('.intro-page').addClass('hidden');
-	$('.map').removeClass('hidden');
-	$('.brewery-side-bar').removeClass('hidden');
 	var userCity = $('.city').val();
 	var userState = $('.state').val(); 
-	getBreweryDataFromApi(userCity, userState, savesApiData);
+	getBreweryDataFromApi(userCity, userState, savesApiData)
+	.then(function() {
+		if (locations.length > 0) {
+			$('.intro-page').addClass('hidden');
+			$('.map').removeClass('hidden');
+			$('.brewery-side-bar').removeClass('hidden');
+		} 
+		else {
+			$('.intro-page').addClass('hidden')
+			$('.failure-page').removeClass('hidden')
+		}
+	})
+	.catch(function(err) {
+		console.log(err);
+	});
 })
+
 
 	//listens for clicks on lis to expand buttons - v2
 	//listens for clicks on google maps markers to expand info -v2
